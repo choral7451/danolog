@@ -1,23 +1,18 @@
 package com.danolog.request;
 
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Setter
+@Getter
+@ToString  // ?
 public class PostCreate {
 
-  public String title;
-  public String content;
+  @NotBlank(message = "타이틀을 입력해주세요.")
+  private String title;
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public void setContent(String content) {
-    this.content = content;
-  }
-
-  @Override
-  public String toString() {
-    return "PostCreate{" +
-      "title='" + title + '\'' +
-      ", content='" + content + '\'' +
-      '}';
-  }
+  @NotBlank(message = "컨텐츠을 입력해주세요.")
+  private String content;
 }
