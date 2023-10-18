@@ -2,6 +2,7 @@ package com.danolog.controller;
 
 import com.danolog.domain.Post;
 import com.danolog.request.PostCreate;
+import com.danolog.response.PostResponse;
 import com.danolog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class PostController {
   }
 
   @GetMapping("/posts/{postId}")
-  public Post get(@PathVariable(name = "postId") Long id) {
+  public PostResponse get(@PathVariable(name = "postId") Long id) {
     return postService.get(id);
   }
 }
