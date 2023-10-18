@@ -1,5 +1,6 @@
 package com.danolog.controller;
 
+import com.danolog.domain.Post;
 import com.danolog.request.PostCreate;
 import com.danolog.service.PostService;
 import jakarta.validation.Valid;
@@ -21,8 +22,7 @@ public class PostController {
   private final PostService postService;
 
   @PostMapping("/posts")
-  public Map<String, String> post(@RequestBody @Valid PostCreate request) {
+  public void post(@RequestBody @Valid PostCreate request) {
     postService.write(request);
-    return Map.of();
   }
 }
