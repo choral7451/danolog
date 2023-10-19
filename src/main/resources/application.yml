@@ -4,6 +4,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     platform: postgres
 
+  data:
+    web:
+      pageable:
+        one-indexed-parameters:  true
+        default-page-size: 5
   jpa:
     hibernate:
       ddl-auto: update
