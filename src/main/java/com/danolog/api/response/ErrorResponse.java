@@ -1,4 +1,4 @@
-package com.danolog.response;
+package com.danolog.api.response;
 
 import lombok.Builder;
 import lombok.Getter;

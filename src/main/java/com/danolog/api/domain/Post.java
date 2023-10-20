@@ -1,4 +1,4 @@
-package com.danolog.domain;
+package com.danolog.api.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

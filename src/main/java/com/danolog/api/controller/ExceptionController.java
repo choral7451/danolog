@@ -1,8 +1,6 @@
-package com.danolog.controller;
+package com.danolog.api.controller;
 
-import com.danolog.response.ErrorResponse;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import com.danolog.api.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

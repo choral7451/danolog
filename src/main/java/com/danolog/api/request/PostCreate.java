@@ -1,4 +1,4 @@
-package com.danolog.request;
+package com.danolog.api.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

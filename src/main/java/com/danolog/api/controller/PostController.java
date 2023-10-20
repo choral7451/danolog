@@ -1,8 +1,9 @@
-package com.danolog.controller;
+package com.danolog.api.controller;
 
-import com.danolog.request.PostCreate;
-import com.danolog.response.PostResponse;
-import com.danolog.service.PostService;
+import com.danolog.api.request.PostCreate;
+import com.danolog.api.request.PostSearch;
+import com.danolog.api.response.PostResponse;
+import com.danolog.api.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class PostController {
   }
 
   @GetMapping("/posts")
-  public List<PostResponse> getList(@PageableDefault Pageable pageable) {
-    return postService.getList(pageable);
+  public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
+    return postService.getList(postSearch);
   }
 }

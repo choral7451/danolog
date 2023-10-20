@@ -1,8 +1,8 @@
-package com.danolog.controller;
+package com.danolog.api.controller;
 
-import com.danolog.domain.Post;
-import com.danolog.repository.PostRepository;
-import com.danolog.request.PostCreate;
+import com.danolog.api.domain.Post;
+import com.danolog.api.repository.PostRepository;
+import com.danolog.api.request.PostCreate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -150,12 +150,36 @@ class PostControllerTest {
     // expected
     mockMvc.perform(get("/posts")
         .param("page","1")
-        .param("sort", "id,desc")
         .param("size", "5")
         .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].title").value("제목 - 30"))
         .andExpect(jsonPath("$[0].content").value("서초 자이 - 30"))
         .andDo(print());
+  }
+
+  @Test
+  @DisplayName("페이지를 0으로 요청하면 첫페이지를 가지고 온다.")
+  void test6() throws Exception {
+    // given
+    List<Post> requestPosts = IntStream.range(1, 31)
+      .mapToObj(i ->
+        Post.builder()
+          .title("제목 - " + i)
+          .content("서초 자이 - " + i)
+          .build()
+      ).toList();
+
+    postRepository.saveAll(requestPosts);
+
+    // expected
+    mockMvc.perform(get("/posts")
+        .param("page","0")
+        .param("size", "5")
+        .contentType(APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$[0].title").value("제목 - 30"))
+      .andExpect(jsonPath("$[0].content").value("서초 자이 - 30"))
+      .andDo(print());
   }
 }

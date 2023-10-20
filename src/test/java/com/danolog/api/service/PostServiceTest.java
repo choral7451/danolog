@@ -1,9 +1,10 @@
-package com.danolog.service;
+package com.danolog.api.service;
 
-import com.danolog.domain.Post;
-import com.danolog.repository.PostRepository;
-import com.danolog.request.PostCreate;
-import com.danolog.response.PostResponse;
+import com.danolog.api.domain.Post;
+import com.danolog.api.repository.PostRepository;
+import com.danolog.api.request.PostCreate;
+import com.danolog.api.request.PostSearch;
+import com.danolog.api.response.PostResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -87,14 +88,15 @@ class PostServiceTest {
 
     postRepository.saveAll(requestPosts);
 
-    Pageable pageable = PageRequest.of(0, 5, DESC, "id");
+    PostSearch postSearch = PostSearch.builder()
+      .page(1)
+      .build();
 
     // when
-    List<PostResponse> posts = postService.getList(pageable) ;
+    List<PostResponse> posts = postService.getList(postSearch) ;
 
     // then
-    assertEquals(5L, posts.size());
+    assertEquals(20L, posts.size());
     assertEquals("제목 - 30", posts.get(0).getTitle());
-    assertEquals("제목 - 26", posts.get(4).getTitle());
   }
 }

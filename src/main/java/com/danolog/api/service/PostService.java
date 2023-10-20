@@ -1,9 +1,11 @@
-package com.danolog.service;
+package com.danolog.api.service;
 
-import com.danolog.domain.Post;
-import com.danolog.repository.PostRepository;
-import com.danolog.request.PostCreate;
-import com.danolog.response.PostResponse;
+import com.danolog.api.domain.Post;
+import com.danolog.api.repository.PostRepository;
+import com.danolog.api.request.PostCreate;
+import com.danolog.api.request.PostSearch;
+import com.danolog.api.response.PostResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PostService {
 
@@ -40,8 +43,8 @@ public class PostService {
       .build();
   }
 
-  public List<PostResponse> getList(Pageable pageable) {
-    return postRepository.findAll(pageable).stream()
+  public List<PostResponse> getList(PostSearch postSearch) {
+    return postRepository.getList(postSearch).stream()
       .map(PostResponse::new)
       .collect(Collectors.toList());
   }

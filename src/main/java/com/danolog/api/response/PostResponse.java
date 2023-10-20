@@ -1,6 +1,6 @@
-package com.danolog.response;
+package com.danolog.api.response;
 
-import com.danolog.domain.Post;
+import com.danolog.api.domain.Post;
 import lombok.Builder;
 import lombok.Getter;
 
