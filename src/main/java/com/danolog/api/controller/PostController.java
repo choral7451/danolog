@@ -1,14 +1,13 @@
 package com.danolog.api.controller;
 
 import com.danolog.api.request.PostCreate;
+import com.danolog.api.request.PostEdit;
 import com.danolog.api.request.PostSearch;
 import com.danolog.api.response.PostResponse;
 import com.danolog.api.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,5 +33,11 @@ public class PostController {
   @GetMapping("/posts")
   public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
     return postService.getList(postSearch);
+  }
+
+
+  @PatchMapping("/posts/{postId}")
+  public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit postEdit) {
+    postService.edit(postId, postEdit);
   }
 }
