@@ -1,6 +1,7 @@
 package com.danolog.api.service;
 
 import com.danolog.api.domain.Post;
+import com.danolog.api.exception.PostNotFound;
 import com.danolog.api.repository.PostRepository;
 import com.danolog.api.request.PostCreate;
 import com.danolog.api.request.PostEdit;
@@ -16,8 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PostServiceTest {
@@ -168,5 +168,58 @@ class PostServiceTest {
 
     // then
     assertEquals(0, postRepository.count());
+  }
+
+  @Test
+  @DisplayName("글 1개 조회")
+  void test7() {
+    // given
+    Post post = Post.builder()
+      .title("다니엘")
+      .content("서초구")
+      .build();
+    postRepository.save(post);
+
+    // expected
+    assertThrows(PostNotFound.class, () -> {
+      postService.get(post.getId() + 1L);
+    });
+  }
+
+  @Test
+  @DisplayName("게시글 삭제 - 존재하지 않는 글")
+  void test8() {
+    // given
+    Post post  = Post.builder()
+      .title("다니엘")
+      .content("내용")
+      .build();
+    postRepository.save(post);
+
+    // then
+    assertThrows(PostNotFound.class, () -> {
+      postService.delete(post.getId() + 1L);
+    });
+  }
+
+  @Test
+  @DisplayName("글 내용 수정 - 존재하지 않는 글")
+  void test9() {
+    // given
+    Post post  = Post.builder()
+      .title("다니엘")
+      .content("내용")
+      .build();
+    postRepository.save(post);
+
+    PostEdit postEdit = PostEdit.builder()
+      .title("다니엘")
+      .content(null)
+      .build();
+
+    // expected
+    assertThrows(PostNotFound.class, () -> {
+      postService.edit(post.getId() + 1L, postEdit);
+    });
   }
 }
