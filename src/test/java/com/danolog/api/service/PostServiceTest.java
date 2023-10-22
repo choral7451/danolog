@@ -139,7 +139,7 @@ class PostServiceTest {
 
     PostEdit postEdit = PostEdit.builder()
       .title("다니엘")
-      .content("내내용")
+      .content(null)
       .build();
 
     // when
@@ -150,6 +150,23 @@ class PostServiceTest {
       .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. - " + post.getId()));
 
     Assertions.assertEquals("다니엘", changedPost.getTitle());
-    Assertions.assertEquals("내내용", changedPost.getContent());
+    Assertions.assertEquals("내용", changedPost.getContent());
+  }
+
+  @Test
+  @DisplayName("게시글 삭제")
+  void test6() {
+    // given
+    Post post  = Post.builder()
+      .title("다니엘")
+      .content("내용")
+      .build();
+    postRepository.save(post);
+
+    // when
+    postService.delete(post.getId());
+
+    // then
+    assertEquals(0, postRepository.count());
   }
 }
