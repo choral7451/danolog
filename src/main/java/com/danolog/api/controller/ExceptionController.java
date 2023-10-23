@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ExceptionController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(DanologException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public ErrorResponse invalidRequestHandler(MethodArgumentNotValidException e) {
         ErrorResponse response = ErrorResponse.builder()
@@ -35,12 +35,13 @@ public class ExceptionController {
     public ResponseEntity<ErrorResponse> danologException(DanologException e) {
         int statusCode = e.getStatusCode();
 
-        ErrorResponse errorResponse = ErrorResponse.builder()
+        ErrorResponse body = ErrorResponse.builder()
           .code(String.valueOf(statusCode))
           .message(e.getMessage())
+          .validation(e.getValidation())
           .build();
 
       return ResponseEntity.status(statusCode)
-          .body(errorResponse);
+          .body(body);
     }
 }

@@ -1,6 +1,5 @@
 package com.danolog.api.controller;
 
-import com.danolog.api.exception.InvalidRequest;
 import com.danolog.api.request.PostCreate;
 import com.danolog.api.request.PostEdit;
 import com.danolog.api.request.PostSearch;
@@ -23,10 +22,7 @@ public class PostController {
 
   @PostMapping("/posts")
   public void post(@RequestBody @Valid PostCreate request) {
-    if (request.getTitle().contains("바보")) {
-      throw new InvalidRequest();
-    }
-
+    request.validate();
     postService.write(request);
   }
 
