@@ -1,7 +1,9 @@
 package com.danolog.api.controller;
 
+import com.danolog.api.exception.DanologException;
 import com.danolog.api.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ExceptionController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(DanologException.class)
     @ResponseBody
     public ErrorResponse invalidRequestHandler(MethodArgumentNotValidException e) {
         ErrorResponse response = ErrorResponse.builder()
@@ -26,5 +28,19 @@ public class ExceptionController {
         }
 
         return response;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(DanologException.class)
+    public ResponseEntity<ErrorResponse> danologException(DanologException e) {
+        int statusCode = e.getStatusCode();
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+          .code(String.valueOf(statusCode))
+          .message(e.getMessage())
+          .build();
+
+      return ResponseEntity.status(statusCode)
+          .body(errorResponse);
     }
 }
