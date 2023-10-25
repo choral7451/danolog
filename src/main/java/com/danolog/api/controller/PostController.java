@@ -20,12 +20,20 @@ public class PostController {
 
   private final PostService postService;
 
+  @GetMapping("/test")
+  public String test() {
+    return "hello";
+  }
+
+  @GetMapping("/foo")
+  public String foo() {
+    return "foo";
+  }
+
   @PostMapping("/posts")
-  public void post(@RequestBody @Valid PostCreate request, @RequestHeader String authorization) {
-    if (authorization.equals("danolman")) {
-      request.validate();
-      postService.write(request);
-    }
+  public void post(@RequestBody @Valid PostCreate request) {
+    request.validate();
+    postService.write(request);
   }
 
   @GetMapping("/posts/{postId}")
@@ -40,16 +48,12 @@ public class PostController {
 
 
   @PatchMapping("/posts/{postId}")
-  public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit postEdit, @RequestHeader String authorization) {
-    if (authorization.equals("danolman")) {
-      postService.edit(postId, postEdit);
-    }
+  public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit postEdit) {
+    postService.edit(postId, postEdit);
   }
 
   @DeleteMapping("/posts/{postId}")
-  public void delete(@PathVariable Long postId, @RequestHeader String authorization) {
-    if (authorization.equals("danolman")) {
-      postService.delete(postId);
-    }
+  public void delete(@PathVariable Long postId) {
+    postService.delete(postId);
   }
 }

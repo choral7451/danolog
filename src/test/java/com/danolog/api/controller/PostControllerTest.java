@@ -73,7 +73,6 @@ class PostControllerTest {
 
     // when
     mockMvc.perform(post("/posts")
-        .header("authorization", "danolman")
         .contentType(APPLICATION_JSON)
         .content(json)
       )
