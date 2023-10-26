@@ -10,12 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class AuthService {
 
   private final UserRepository userRepository;
 
+  @Transactional
   public String signin(Login login) {
     User user = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
       .orElseThrow(InvalidSigninInformation::new);
