@@ -1,5 +1,6 @@
 package com.danolog.api.controller;
 
+import com.danolog.api.config.data.UserSession;
 import com.danolog.api.request.PostCreate;
 import com.danolog.api.request.PostEdit;
 import com.danolog.api.request.PostSearch;
@@ -20,14 +21,15 @@ public class PostController {
 
   private final PostService postService;
 
-  @GetMapping("/test")
-  public String test() {
-    return "hello";
+  @GetMapping("/foo")
+  public String foo(UserSession userSession) {
+    log.info(">>> {}", userSession.name);
+    return userSession.name;
   }
 
-  @GetMapping("/foo")
-  public String foo() {
-    return "foo";
+  @GetMapping("/bar")
+  public String bar() {
+    return "인즈이 필요없는 페이지";
   }
 
   @PostMapping("/posts")
