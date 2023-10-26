@@ -5,6 +5,7 @@ import lombok.*;
 
 @Getter
 @Entity
+@Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Post {
 
