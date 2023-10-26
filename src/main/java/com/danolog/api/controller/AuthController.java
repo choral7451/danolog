@@ -2,8 +2,9 @@ package com.danolog.api.controller;
 
 import com.danolog.api.domain.User;
 import com.danolog.api.exception.InvalidSigninInformation;
-import com.danolog.api.repository.UserRepository;
 import com.danolog.api.request.Login;
+import com.danolog.api.response.SessionResponse;
+import com.danolog.api.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,16 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-  private final UserRepository userRepository;
+  private final AuthService authService;
 
   @PostMapping("/auth/login")
-  public User login(@RequestBody @Valid Login login) {
-    log.info(">>> {}", login);
-
-    User user = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
-      .orElseThrow(InvalidSigninInformation::new);
-
-    log.info(">>> {}", user);
-    return user;
+  public SessionResponse login(@RequestBody @Valid Login login) {
+    String accessToken = authService.signin(login);
+    return new SessionResponse(accessToken);
   }
 }
