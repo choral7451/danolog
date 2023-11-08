@@ -8,4 +8,9 @@ Content-Type: application/json
   "password": "a123456!"
 }
 
+### 인중 패아자 요청
+
+GET http://localhost:8080/foo
+Content-Type: application/json
+Cookie: SESSION=68542f6e-9582-465d-8874-2fabf2348922
 
