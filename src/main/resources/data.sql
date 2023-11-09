@@ -1,1 +1,0 @@
-INSERT INTO "users" (name, email, password, created_at) VALUES ('daniel', 'artinfokorea2022@gmail.com', 'a123456!', '2022-11-20 17:00:00')

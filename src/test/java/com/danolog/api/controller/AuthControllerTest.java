@@ -5,6 +5,7 @@ import com.danolog.api.domain.User;
 import com.danolog.api.repository.SessionRepository;
 import com.danolog.api.repository.UserRepository;
 import com.danolog.api.request.Login;
+import com.danolog.api.request.Signup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.hamcrest.Matchers;
@@ -168,6 +169,24 @@ class AuthControllerTest {
         .header("Authorization", session.getAccessToken() + "-Other")
         .contentType(APPLICATION_JSON))
       .andExpect(status().isUnauthorized())
+      .andDo(print());
+  }
+
+  @Test
+  @DisplayName("회원가입")
+  void test6() throws Exception {
+    // given
+    Signup signup = Signup.builder()
+      .name("danolman")
+      .email("danolman@gmail.com")
+      .password("1234")
+      .build();
+
+    //expected
+    mockMvc.perform(post("/auth/signup")
+        .content(objectMapper.writeValueAsString(signup))
+        .contentType(APPLICATION_JSON))
+      .andExpect(status().isOk())
       .andDo(print());
   }
 }
