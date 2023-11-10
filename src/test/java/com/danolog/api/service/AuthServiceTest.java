@@ -1,8 +1,11 @@
 package com.danolog.api.service;
 
+import com.danolog.api.crypto.PasswordEncoder;
 import com.danolog.api.domain.User;
 import com.danolog.api.exception.AlreadyExistsEmailException;
+import com.danolog.api.exception.InvalidSigninInformation;
 import com.danolog.api.repository.UserRepository;
+import com.danolog.api.request.Login;
 import com.danolog.api.request.Signup;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -71,7 +74,52 @@ class AuthServiceTest {
     // when
     assertThrows(AlreadyExistsEmailException.class, () -> authService.signup(signup));
 
-    // then
-
   }
+
+  @Test
+  @DisplayName("로그인 성공")
+  void test3() {
+    // given
+    PasswordEncoder encoder = new PasswordEncoder();
+    String encryptedPassword = encoder.encrypt("1234");
+
+    User user = User.builder()
+      .name("danolman")
+      .email("danolman@gmail.com")
+      .password(encryptedPassword)
+      .build();
+    userRepository.save(user);
+
+    Login login = Login.builder()
+      .email("danolman@gmail.com")
+      .password("1234")
+      .build();
+
+    // when
+    Long userId = authService.signin(login);
+
+    // then
+    assertNotNull(userId);
+  }
+
+  @Test
+  @DisplayName("로그인시 비밀번호 틀림")
+  void test4() {
+    // given
+    Signup signup = Signup.builder()
+      .name("danolman")
+      .email("danolman@gmail.com")
+      .password("1234")
+      .build();
+    authService.signup(signup);
+
+    Login login = Login.builder()
+      .email("danolman@gmail.com")
+      .password("5667")
+      .build();
+
+    // expected
+    assertThrows(InvalidSigninInformation.class, () -> authService.signin(login));
+  }
+
 }
