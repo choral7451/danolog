@@ -1,6 +1,6 @@
 package com.danolog.api.service;
 
-import com.danolog.api.crypto.PasswordEncoder;
+import com.danolog.api.crypto.ScryptPasswordEncoder;
 import com.danolog.api.domain.User;
 import com.danolog.api.exception.AlreadyExistsEmailException;
 import com.danolog.api.exception.InvalidSigninInformation;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
 class AuthServiceTest {
@@ -80,7 +81,7 @@ class AuthServiceTest {
   @DisplayName("로그인 성공")
   void test3() {
     // given
-    PasswordEncoder encoder = new PasswordEncoder();
+    ScryptPasswordEncoder encoder = new ScryptPasswordEncoder();
     String encryptedPassword = encoder.encrypt("1234");
 
     User user = User.builder()
