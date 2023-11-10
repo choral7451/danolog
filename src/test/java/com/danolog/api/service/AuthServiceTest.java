@@ -1,16 +1,12 @@
 package com.danolog.api.service;
 
-import com.danolog.api.domain.Post;
 import com.danolog.api.domain.User;
 import com.danolog.api.exception.AlreadyExistsEmailException;
 import com.danolog.api.repository.UserRepository;
-import com.danolog.api.request.PostCreate;
 import com.danolog.api.request.Signup;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -49,7 +45,8 @@ class AuthServiceTest {
 
     User user = userRepository.findAll().iterator().next();
     assertEquals("danolman@gmail.com", user.getEmail());
-    assertEquals("1234", user.getPassword());
+    assertNotNull(user.getPassword());
+    assertNotEquals("1234", user.getPassword());
     assertEquals("danolman", user.getName());
   }
 
