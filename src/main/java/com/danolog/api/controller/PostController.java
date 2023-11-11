@@ -1,6 +1,5 @@
 package com.danolog.api.controller;
 
-import com.danolog.api.config.data.UserSession;
 import com.danolog.api.request.PostCreate;
 import com.danolog.api.request.PostEdit;
 import com.danolog.api.request.PostSearch;
@@ -20,17 +19,6 @@ import java.util.List;
 public class PostController {
 
   private final PostService postService;
-
-  @GetMapping("/foo")
-  public Long foo(UserSession userSession) {
-    log.info(">>> {}", userSession.id);
-    return userSession.id;
-  }
-
-  @GetMapping("/bar")
-  public String bar() {
-    return "인즈이 필요없는 페이지";
-  }
 
   @PostMapping("/posts")
   public void post(@RequestBody @Valid PostCreate request) {

@@ -3,11 +3,8 @@ package com.danolog.api.service;
 import com.danolog.api.crypto.PasswordEncoder;
 import com.danolog.api.domain.User;
 import com.danolog.api.exception.AlreadyExistsEmailException;
-import com.danolog.api.exception.InvalidSigninInformation;
 import com.danolog.api.repository.UserRepository;
-import com.danolog.api.request.Login;
 import com.danolog.api.request.Signup;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +16,6 @@ public class AuthService {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
-
-  @Transactional
-  public Long signin(Login login) {
-    User user = userRepository.findByEmail(login.getEmail())
-      .orElseThrow(InvalidSigninInformation::new);
-
-    var matches = passwordEncoder.matches(login.getPassword(), user.getPassword());
-    if (!matches) {
-      throw new InvalidSigninInformation();
-    }
-
-    return user.getId();
-  }
 
   public void signup(Signup signup) {
     Optional<User> userOptional = userRepository.findByEmail(signup.getEmail());
