@@ -12,9 +12,12 @@ Content-Type: application/json
 ### 로그인
 
 POST http://localhost:8080/auth/login
-Content-Type: application/x-www-form-urlencoded
+Content-Type: application/json
 
-username=danolman@gmail.com&password=1234&remember=1
+{
+  "email": "danolman@gmail.com",
+  "password": "1234"
+}
 
 ### 유저 페이지
 
