@@ -1,10 +1,14 @@
 package com.danolog.api.controller;
 
+import com.danolog.api.config.DanologMockUser;
 import com.danolog.api.domain.Post;
+import com.danolog.api.domain.User;
 import com.danolog.api.repository.PostRepository;
+import com.danolog.api.repository.UserRepository;
 import com.danolog.api.request.PostCreate;
 import com.danolog.api.request.PostEdit;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,9 +40,13 @@ class PostControllerTest {
   @Autowired
   private PostRepository postRepository;
 
-  @BeforeEach
+  @Autowired
+  private UserRepository userRepository;
+
+  @AfterEach
   void clean() {
     postRepository.deleteAll();
+    userRepository.deleteAll();
   }
 
   @Test
@@ -63,7 +71,8 @@ class PostControllerTest {
   }
 
   @Test
-  @WithMockUser(username = "danolman@gmail.com",roles = {"ADMIN"})
+  @DanologMockUser
+//  @WithMockUser(username = "danolman@gmail.com",roles = {"ADMIN"})
   @DisplayName("글 작성")
   void test3() throws Exception {
     // given
@@ -94,9 +103,17 @@ class PostControllerTest {
   @DisplayName("글 1개 조회")
   void test4() throws Exception {
     // given
+    User user = User.builder()
+      .name("다놀맨")
+      .email("danolman91@gmail.com")
+      .password("1234")
+      .build();
+    userRepository.save(user);
+
     Post post = Post.builder()
       .title("123456789123456")
       .content("bar")
+      .user(user)
       .build();
 
     postRepository.save(post);
@@ -115,11 +132,19 @@ class PostControllerTest {
   @DisplayName("글 여러개 조회")
   void test5() throws Exception {
     // given
+    User user = User.builder()
+      .name("다놀맨")
+      .email("danolman91@gmail.com")
+      .password("1234")
+      .build();
+    userRepository.save(user);
+
     List<Post> requestPosts = IntStream.range(1, 31)
       .mapToObj(i ->
         Post.builder()
           .title("제목 - " + i)
           .content("서초 자이 - " + i)
+          .user(user)
           .build()
       ).toList();
 
@@ -140,11 +165,19 @@ class PostControllerTest {
   @DisplayName("페이지를 0으로 요청하면 첫페이지를 가지고 온다.")
   void test6() throws Exception {
     // given
+    User user = User.builder()
+      .name("다놀맨")
+      .email("danolman91@gmail.com")
+      .password("1234")
+      .build();
+    userRepository.save(user);
+
     List<Post> requestPosts = IntStream.range(1, 31)
       .mapToObj(i ->
         Post.builder()
           .title("제목 - " + i)
           .content("서초 자이 - " + i)
+          .user(user)
           .build()
       ).toList();
 
@@ -162,13 +195,17 @@ class PostControllerTest {
   }
 
   @Test
-  @WithMockUser(username = "danolman@gmail.com",roles = {"ADMIN"})
+  @DanologMockUser
+//  @WithMockUser(username = "danolman@gmail.com",roles = {"ADMIN"})
   @DisplayName("글 제목 수정")
   void test7() throws Exception {
     // given
+    User user = userRepository.findAll().get(0);
+
     Post post  = Post.builder()
       .title("다니엘")
       .content("내용")
+      .user(user )
       .build();
     postRepository.save(post);
 
@@ -189,13 +226,17 @@ class PostControllerTest {
   }
 
   @Test
-  @WithMockUser(username = "danolman@gmail.com",roles = {"ADMIN"})
+  @DanologMockUser
+//  @WithMockUser(username = "danolman@gmail.com",roles = {"ADMIN"})\
   @DisplayName("게시글 삭제")
   void test8() throws Exception {
     // given
+    User user = userRepository.findAll().get(0);
+
     Post post  = Post.builder()
       .title("다니엘")
       .content("내용")
+      .user(user)
       .build();
     postRepository.save(post);
 

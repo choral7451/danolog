@@ -1,8 +1,10 @@
 package com.danolog.api.service;
 
 import com.danolog.api.domain.Post;
+import com.danolog.api.domain.User;
 import com.danolog.api.exception.PostNotFound;
 import com.danolog.api.repository.PostRepository;
+import com.danolog.api.repository.UserRepository;
 import com.danolog.api.request.PostCreate;
 import com.danolog.api.request.PostEdit;
 import com.danolog.api.request.PostSearch;
@@ -26,17 +28,28 @@ class PostServiceTest {
   private PostService postService;
 
   @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
   private PostRepository postRepository;
 
   @BeforeEach
   void clean() {
     postRepository.deleteAll();
+    userRepository.deleteAll();
   }
 
   @Test
   @DisplayName("글 작성")
   void test1() {
     // given
+    User user = User.builder()
+      .name("다놀맨")
+      .email("danolman91@gmail.com")
+      .password("1234")
+      .build();
+
+    userRepository.save(user);
 
     PostCreate postCreate = PostCreate.builder()
       .title("제목입니다.")
@@ -44,7 +57,7 @@ class PostServiceTest {
       .build();
 
     // when
-    postService.write(postCreate);
+    postService.write(user.getId(),postCreate);
 
     // then
     assertEquals(1, postRepository.count());

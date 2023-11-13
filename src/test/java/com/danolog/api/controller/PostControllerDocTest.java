@@ -1,9 +1,13 @@
 package com.danolog.api.controller;
 
+import com.danolog.api.config.DanologMockUser;
 import com.danolog.api.domain.Post;
 import com.danolog.api.repository.PostRepository;
+import com.danolog.api.repository.UserRepository;
 import com.danolog.api.request.PostCreate;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +42,16 @@ public class PostControllerDocTest {
   private PostRepository postRepository;
 
   @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
   private ObjectMapper objectMapper;
+
+  @AfterEach
+  void clean() {
+    postRepository.deleteAll();
+    userRepository.deleteAll();
+  }
 
   @Test
   @DisplayName("글 단건 조회")
@@ -66,7 +79,8 @@ public class PostControllerDocTest {
   }
 
   @Test
-  @WithMockUser(username = "danolman@gmail.com",roles = {"ADMIN"})
+  @DanologMockUser
+//  @WithMockUser(username = "danolman@gmail.com",roles = {"ADMIN"})
   @DisplayName("글 등록")
   void test2() throws Exception {
     PostCreate request = PostCreate.builder()
