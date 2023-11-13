@@ -3,7 +3,9 @@ package com.danolog.api.service;
 import com.danolog.api.domain.Post;
 import com.danolog.api.domain.PostEditor;
 import com.danolog.api.exception.PostNotFound;
+import com.danolog.api.exception.UserNotFound;
 import com.danolog.api.repository.PostRepository;
+import com.danolog.api.repository.UserRepository;
 import com.danolog.api.request.PostCreate;
 import com.danolog.api.request.PostEdit;
 import com.danolog.api.request.PostSearch;
@@ -23,12 +25,17 @@ import java.util.stream.Collectors;
 public class PostService {
 
 
+  private final UserRepository userRepository;
   private final PostRepository postRepository;
 
-  public void write(PostCreate postCreate) {
+  public void write(Long userId, PostCreate postCreate) {
+    var user = userRepository.findById(userId)
+      .orElseThrow(UserNotFound::new);
+
     Post post = Post.builder()
         .title(postCreate.getTitle())
         .content(postCreate.getContent())
+        .user(user)
         .build();
 
     postRepository.save(post);
