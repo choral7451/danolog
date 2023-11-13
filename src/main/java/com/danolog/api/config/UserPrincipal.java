@@ -11,10 +11,7 @@ public class UserPrincipal extends User {
 
   public UserPrincipal(com.danolog.api.domain.User user) {
     super(user.getEmail(), user.getPassword(),
-      List.of(
-        new SimpleGrantedAuthority("ROLE_ADMIN"),
-        new SimpleGrantedAuthority("WRITE")
-      )
+      List.of(new SimpleGrantedAuthority("ROLE_USER"))
     );
     this.userId = user.getId();
   }
